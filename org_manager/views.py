@@ -8,7 +8,6 @@ from django.utils.translation import gettext as _
 from rest_framework.decorators import action
 
 
-logger = logging
 # Create your views here.
 class ManagerViewset(viewsets.ModelViewSet):
     model = Manager
@@ -16,19 +15,22 @@ class ManagerViewset(viewsets.ModelViewSet):
     serializer_class = ManagerSerializer
 
     def create(self, request, **args):
+        logging.info("requested to create Manager")
         try:
             serializer = self.serializer_class(data=request.data)
             if serializer.is_valid():
                 obj = serializer.save()
                 context = {"success": True, "message": _("Record has been added successfully."), "data": serializer.data}
                 return Response(context, status=status.HTTP_200_OK)
-            context = {'error': serializer.errors, "success": False, "message": _("Failed to create new Record.")}
+            context = {'error': serializer.errors, "success": False, "message": _("Failed to create new record.")}
             return Response(context, status=status.HTTP_400_BAD_REQUEST)
         except Exception as error:
-            context = {'error': str(error), 'success': False, 'message': _('Failed to add Record.')}
+            context = {'error': str(error), 'success': False, 'message': _('Failed to add record.')}
+            logging.error("Failed to add record.")
             return Response(context, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def list(self, request):
+        logging.info("requested the list of Manager")
         try:
             serializer = self.serializer_class(
                 self.filter_queryset(self.get_queryset().order_by('first_name')), many=True)
@@ -39,10 +41,11 @@ class ManagerViewset(viewsets.ModelViewSet):
         except Exception as error:
             context = {'error': str(error), 'success': False, 'message': _(
                 'Failed to return record.')}
-            
+            logging.error("Failed to return record ")
             return Response(context, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def partial_update(self, request, pk=None):
+        logging.info("requested to update the Manager of id {}".format(pk))
         try:
             try:
                 obj = self.model.objects.get(id=pk)
@@ -58,9 +61,11 @@ class ManagerViewset(viewsets.ModelViewSet):
             return Response(context, status=status.HTTP_400_BAD_REQUEST)
         except Exception as error:
             context = {'error': str(error), 'success': False, 'message': _('Failed to update Record.')}
+            logging.error("Failed to update Record.")
             return Response(context, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def retrieve(self, request, pk=None):
+        logging.info("requested to retrieve the Manager of id {}".format(pk))
         try:
             try:
                 obj = self.model.objects.get(id=pk)
@@ -73,9 +78,11 @@ class ManagerViewset(viewsets.ModelViewSet):
             return Response(context, status=status.HTTP_200_OK)
         except Exception as error:
             context = {'error': str(error), 'success': False, 'message': _('Failed to retrieve Record.')}
+            logging.error("Failed to retrieve Record.")
             return Response(context, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def destroy(self, request, pk=None):
+        logging.info("requested to delete the Manager of id {}".format(pk))
         try:
             try:
                 obj = self.get_object()
@@ -94,10 +101,12 @@ class ManagerViewset(viewsets.ModelViewSet):
         except Exception as error:
             context = {'error': str(error), 'success': False,
                        'message': _('Failed to delete record.')}
+            logging.error("Failed to delete record.")
             return Response(context, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @action(detail=False, methods=['post'], name="login")
     def login(self, request):
+        logging.info("Manager requested to login.")
         try:
             data = request.data
             
@@ -110,7 +119,7 @@ class ManagerViewset(viewsets.ModelViewSet):
             serializer = self.serializer_class(obj[0])
             context = {
                 "success": True, "message": _(""), "data": serializer.data}
-            
+            logging.error("Manager login Failed.")
             return Response(context, status=status.HTTP_200_OK)
 
         except Exception as error:
@@ -125,6 +134,7 @@ class EmployeeViewset(viewsets.ModelViewSet):
     serializer_class = EmployeeSerializer
     
     def create(self, request, **args):
+        logging.info("requested to create the Employee list")
         try:
             serializer = self.serializer_class(data=request.data)
             if serializer.is_valid():
@@ -135,9 +145,11 @@ class EmployeeViewset(viewsets.ModelViewSet):
             return Response(context, status=status.HTTP_400_BAD_REQUEST)
         except Exception as error:
             context = {'error': str(error), 'success': False, 'message': _('Failed to add Record.')}
+            logging.error("Failed to add Record.")
             return Response(context, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def list(self, request):
+        logging.info("requested for the Employee list")
         try:
             serializer = self.serializer_class(
                 self.filter_queryset(self.get_queryset().order_by('employee_id')), many=True)
@@ -148,10 +160,11 @@ class EmployeeViewset(viewsets.ModelViewSet):
         except Exception as error:
             context = {'error': str(error), 'success': False, 'message': _(
                 'Failed to return record.')}
-            
+            logging.error("Failed to return record.")
             return Response(context, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def partial_update(self, request, pk=None):
+        logging.info("requested to update Employee list {}".format(pk))
         try:
             try:
                 obj = self.model.objects.get(employee_id=pk)
@@ -167,9 +180,11 @@ class EmployeeViewset(viewsets.ModelViewSet):
             return Response(context, status=status.HTTP_400_BAD_REQUEST)
         except Exception as error:
             context = {'error': str(error), 'success': False, 'message': _('Failed to update Record.')}
+            logging.error("Failed to update Record.")
             return Response(context, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def retrieve(self, request, pk=None):
+        logging.info("requested for the Employee list of id {}".format(pk))
         try:
             try:
                 obj = self.model.objects.get(employee_id=pk)
@@ -182,9 +197,11 @@ class EmployeeViewset(viewsets.ModelViewSet):
             return Response(context, status=status.HTTP_200_OK)
         except Exception as error:
             context = {'error': str(error), 'success': False, 'message': _('Failed to retrieve Record.')}
+            logging.error("Failed to retrieve Record.")
             return Response(context, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def destroy(self, request, pk=None):
+        logging.info("requested to delete the Employee of id {}".format(pk))
         try:
             try:
                 obj = self.get_object()
@@ -203,5 +220,6 @@ class EmployeeViewset(viewsets.ModelViewSet):
         except Exception as error:
             context = {'error': str(error), 'success': False,
                        'message': _('Failed to delete record.')}
+            logging.error("Failed to delete record.")
             return Response(context, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
