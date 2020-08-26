@@ -30,17 +30,10 @@ class ManagerViewset(viewsets.ModelViewSet):
 
     def list(self, request):
         try:
-            pagination_data = None
-            page = self.paginate_queryset(self.filter_queryset(self.get_queryset().order_by('first_name')))
-            if page is not None:
-                serializer = self.serializer_class(
-                    page, many=True)
-                pagination_data = self.get_paginated_response(serializer.data)
-            else:
-                serializer = self.serializer_class(
-                    self.filter_queryset(self.get_queryset().order_by('first_name')), many=True)
+            serializer = self.serializer_class(
+                self.filter_queryset(self.get_queryset().order_by('first_name')), many=True)
             context = {
-                "success": True, "message": _("Record details returned successfully."), "data": serializer.data, "pagination_data": pagination_data}
+                "success": True, "message": _("Record details returned successfully."), "data": serializer.data}
 
             return Response(context, status=status.HTTP_200_OK)
         except Exception as error:
@@ -146,17 +139,10 @@ class EmployeeViewset(viewsets.ModelViewSet):
 
     def list(self, request):
         try:
-            pagination_data = None
-            page = self.paginate_queryset(self.filter_queryset(self.get_queryset().order_by('first_name')))
-            if page is not None:
-                serializer = self.serializer_class(
-                    page, many=True)
-                pagination_data = self.get_paginated_response(serializer.data)
-            else:
-                serializer = self.serializer_class(
-                    self.filter_queryset(self.get_queryset().order_by('first_name')), many=True)
+            serializer = self.serializer_class(
+                self.filter_queryset(self.get_queryset().order_by('employee_id')), many=True)
             context = {
-                "success": True, "message": _("Record details returned successfully."), "data": serializer.data, "pagination_data": pagination_data}
+                "success": True, "message": _("Record details returned successfully."), "data": serializer.data}
 
             return Response(context, status=status.HTTP_200_OK)
         except Exception as error:
@@ -168,7 +154,7 @@ class EmployeeViewset(viewsets.ModelViewSet):
     def partial_update(self, request, pk=None):
         try:
             try:
-                obj = self.model.objects.get(id=pk)
+                obj = self.model.objects.get(employee_id=pk)
             except Exception as error:
                 context = {'error': str(error), 'success': False, 'message': _('ID not found')}
                 return Response(context, status=status.HTTP_404_NOT_FOUND)
@@ -186,7 +172,7 @@ class EmployeeViewset(viewsets.ModelViewSet):
     def retrieve(self, request, pk=None):
         try:
             try:
-                obj = self.model.objects.get(id=pk)
+                obj = self.model.objects.get(employee_id=pk)
             except Exception as error:
                 context = {'error': str(error), 'success': False, 'message': _('ID not found')}
                 return Response(context, status=status.HTTP_404_NOT_FOUND)
