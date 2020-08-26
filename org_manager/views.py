@@ -5,6 +5,7 @@ from .models import *
 from rest_framework.response import Response
 from .serializers import ManagerSerializer, EmployeeSerializer
 from django.utils.translation import gettext as _
+from rest_framework.decorators import action
 
 
 logger = logging
@@ -102,10 +103,32 @@ class ManagerViewset(viewsets.ModelViewSet):
                        'message': _('Failed to delete record.')}
             return Response(context, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    @action(detail=False, methods=['post'], name="login")
+    def login(self, request):
+        try:
+            data = request.data
+            
+            obj = Manager.objects.filter(email= data["email"]).filter(password=data["password"])
+            if len(obj) == 0:
+                context = {'error': str('Authentication Fail.'
+                ), 'success': False, 'message': _('Email/password does not matches.')}
+                return Response(context, status=status.HTTP_404_NOT_FOUND)
+
+            serializer = self.serializer_class(obj[0])
+            context = {
+                "success": True, "message": _(""), "data": serializer.data}
+            
+            return Response(context, status=status.HTTP_200_OK)
+
+        except Exception as error:
+            context = {'error': str(error), 'success': False,
+                       'message': _('Failed to delete record.')}
+            return Response(context, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class EmployeeViewset(viewsets.ModelViewSet):
     model = Employee
-    query_set = Employee.objects.all()
+    queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
     
     def create(self, request, **args):
@@ -195,3 +218,4 @@ class EmployeeViewset(viewsets.ModelViewSet):
             context = {'error': str(error), 'success': False,
                        'message': _('Failed to delete record.')}
             return Response(context, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    

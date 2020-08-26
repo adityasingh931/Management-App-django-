@@ -8,8 +8,8 @@ class Manager(models.Model):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=250, blank=False, null=False)
     address = models.TextField(blank=True, null=True, unique=False)
-    dob = models.DateField(null=False, blank=False)
-    company = models.TextField(blank=True, null=True, unique=False)
+    dob = models.DateField(null=True, blank=True)
+    company = models.CharField(max_length=250, blank=True, null=True, default=None)
 
     @property
     def representation(self):
@@ -30,9 +30,9 @@ class Employee(models.Model):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=250, blank=False, null=False)
     address = models.TextField(blank=True, null=True, unique=False)
-    dob = models.DateField(null=False, blank=False)
-    company = models.TextField(blank=True, null=True, unique=False)
-    mobile = models.IntegerField(null=False, blank=False)
+    dob = models.DateField(null=True, blank=True)
+    company = models.CharField(max_length=250, blank=True, null=True, default=None)
+    mobile = models.CharField(max_length=10, blank=True, null=True, default=None)
 
     @property
     def representation(self):
