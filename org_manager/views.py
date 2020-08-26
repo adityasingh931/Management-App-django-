@@ -115,7 +115,7 @@ class ManagerViewset(viewsets.ModelViewSet):
 
         except Exception as error:
             context = {'error': str(error), 'success': False,
-                       'message': _('Failed to delete record.')}
+                       'message': _('Email/password does not matches.')}
             return Response(context, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
