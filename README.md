@@ -11,6 +11,8 @@ create: http://localhost:8000/api/manager/      <br />
 update: http://localhost:8000/api/manager/{id}/ <br />
 delete: http://localhost:8000/api/manager/{id}/ <br />
 
+### `step1: to create tables in Data base`
+admin page: http://localhost:8000/admin
 
 #### `requirements:`
 Django==3.1 <br />
