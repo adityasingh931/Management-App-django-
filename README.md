@@ -1,13 +1,13 @@
 
 ### `CRUD operations for employee:`
-get:    http://localhost:8000/api/employee/
-create: http://localhost:8000/api/employee/
-update: http://localhost:8000/api/employee/{id}/
-delete: http://localhost:8000/api/employee/{id}/
+get:    http://localhost:8000/api/employee/        <br />
+create: http://localhost:8000/api/employee/        <br />
+update: http://localhost:8000/api/employee/{id}/   <br />
+delete: http://localhost:8000/api/employee/{id}/   <br />
 
 #### `CRUD operations for manager:`
-get:    http://localhost:8000/api/manager/ <br />
-create: http://localhost:8000/api/manager/ <br />
+get:    http://localhost:8000/api/manager/      <br />
+create: http://localhost:8000/api/manager/      <br />
 update: http://localhost:8000/api/manager/{id}/ <br />
 delete: http://localhost:8000/api/manager/{id}/ <br />
 
@@ -20,15 +20,15 @@ djangorestframework==3.11.1  <br />
 psycopg2-binary==2.8.5 (if using db postgreSQL. it is a postgreSQL adapter which is used to connect with python.) <br />
 
 #### `Set Database configurations in Setting.py`
-DATABASES = {
-    'default': {
-        'ENGINE': '',
-        'NAME': '',
-        'PASSWORD': '',
-        'USER': '',
-        'HOST': '',
-    }
-}
+DATABASES = {             <br />
+    'default': {          <br />
+        'ENGINE': ' ',    <br />
+        'NAME': ' ',      <br />
+        'PASSWORD': ' ',  <br />
+        'USER': ' ',      <br />
+        'HOST': ' ',      <br />
+    }                     <br />
+}                         <br />
 
 ### `step1: to create tables in Data base`
 python manage.py migrate 
